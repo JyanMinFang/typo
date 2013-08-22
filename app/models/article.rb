@@ -71,6 +71,24 @@ class Article < Content
     end
   end
 
+  def merge_with(other_article_id)
+    if not other_article_id.present?
+      return "Please enter the article ID to merge"
+    end
+    if other_article_id == self.id.to_s
+      return "merge the same artciles is not allowed"
+    end
+    articleToMerge = Article.find_by_id(other_article_id)
+    if articleToMerge.nil?
+      return "the artcile to merge does not exist"
+    end
+    self.body += "\n" + articleToMerge.body
+    self.feedback << articleToMerge.feedback
+    save
+    articleToMerge.destroy
+    return nil
+  end
+
   def set_permalink
     return if self.state == 'draft'
     self.permalink = self.title.to_permalink if self.permalink.nil? or self.permalink.empty?

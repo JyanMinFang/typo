@@ -5,6 +5,9 @@
 <% if current_user.admin? %>
 <%= form_tag :action=>"merge", :id => @article.id do %>
   <h4><%= _("Merge Articles") %></h4>
+  <% if flash[:mergeerror] %>
+    <div class="alert-message error"><%= flash[:mergeerror] %></div>
+  <% end %>
   Article ID <%= text_field :post, :merge, :name => 'merge_with' %>
   <div><%= submit_tag 'Merge' %></div>
 <% end %>
